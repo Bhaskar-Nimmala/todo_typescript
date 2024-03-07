@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import { FC, useState } from 'react';
 import './App.css';
 
+interface AddTodoitem {
+  initValue: string;
+  addTodoitem: (item: string) => void
+}
+
+const Todo: FC<AddTodoitem> = (props) => {
+
+  const [todo, setTodo] = useState(props.initValue);
+
+  const handleAddTodo = (item: string) => {
+    props.addTodoitem(item)
+  }
+
+  return (<>
+    <input type="text" name="todo" id="todo" value={todo} onChange={(e) => setTodo(e.target.value)} />
+    <button type="button" onClick={() => handleAddTodo(todo)}>Add todo</button>
+  </>)
+}
+
+
 function App() {
+  const [todolist, setTodo] = useState<string[]>([]);
+
+  const handleTodo = (item: string) => {
+    setTodo([...todolist, item])
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h3>TO DO APP</h3>
+      <Todo addTodoitem={(item) => handleTodo(item)} initValue='todo' />
+    </>
   );
 }
 
